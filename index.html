@@ -39,7 +39,7 @@
 
         document.querySelector('#button').addEventListener('click', () => {
           document.querySelector('#status').textContent =
-            `Web Assembly says: ${wasmFunction('Hello')}`
+            `Web Assembly says: ${wasmFunction()}`
         }, {passive: true})
       });
   </script>
