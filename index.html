@@ -6,6 +6,15 @@
 
 <body>
   <div id="status">Waiting for Web Assembly</div>
+  <button id="button">Call Web Assembly</button>
+  <p>What's happening?</p>
+  <ol>
+    <li>Fetch a WASM file</li>
+    <li>Compile it to Native Code</li>
+    <li>Instanciate the module while passing it a JS function</li>
+    <li>On the button click, call the WASM code which has generate a number and adds it to 42</li>
+    <li>Display that number on the screen with JS</li>
+  </ol>
   <script>
     // build object that will be passed to Web Assembly
     const getNumber = () => Math.floor(Math.random() * 10);
@@ -26,9 +35,12 @@
       .then(module => WebAssembly.instantiate(module, importObject))
       // call a function of the compiled WASM
       .then(instance => {
-        const wasmFunction = instance.exports.e;
-        document.querySelector('#status').textContent =
-          `Web Assembly says: ${wasmFunction('Hello')}`
+        const {wasmFunction} = instance.exports;
+
+        document.querySelector('#button').addEventListener('click', () => {
+          document.querySelector('#status').textContent =
+            `Web Assembly says: ${wasmFunction('Hello')}`
+        }, {passive: true})
       });
   </script>
 </body>
