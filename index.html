@@ -1,0 +1,36 @@
+<html>
+
+<head>
+  <title>WASM Example</title>
+</head>
+
+<body>
+  <div id="status">Waiting for Web Assembly</div>
+  <script>
+    // build object that will be passed to Web Assembly
+    const getNumber = () => Math.floor(Math.random() * 10);
+    const importObject = {imports: {getNumber}};
+
+    fetchWasmModule = () => fetch('sample.wasm').catch(e => {
+      return Promise.reject(new Error(
+        'Could not fetch `sample.wasm`. Make sure you compiled it first like the readme says.'
+      ));
+    })
+
+    // compile a web assembly byte code to native code as it is streamed from the
+    // server.
+    // There is also WebAssembly.compile() but it is less performant as
+    // WebAssembly.compileStreaming() since the latter compiles each chunk as
+    // they arrive over the network
+    WebAssembly.compileStreaming(fetchWasmModule())
+      .then(module => WebAssembly.instantiate(module, importObject))
+      // call a function of the compiled WASM
+      .then(instance => {
+        const wasmFunction = instance.exports.e;
+        document.querySelector('#status').textContent =
+          `Web Assembly says: ${wasmFunction('Hello')}`
+      });
+  </script>
+</body>
+
+</html>
