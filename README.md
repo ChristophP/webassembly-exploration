@@ -1,5 +1,7 @@
 # Web Assembly Experiment
 
+A small experiment number adding experiment with Web Assembly.
+
 ## Compile WAT to WASM
 
 Compile `Web Assembly Text Format` (WAT) to `Web Assembly Byte Code` (WASM)
